@@ -1,0 +1,3 @@
+
+
+# {"coord":{"lon":-0.13,"lat":51.51},"weather":[{"id":800,"main":"Clear","description":"clear sky","icon":"01n"}],"base":"stations","main":{"temp":297.15,"pressure":1009,"humidity":61,"temp_min":294.15,"temp_max":300.37},"visibility":10000,"wind":{"speed":3.1,"deg":100},"clouds":{"all":0},"dt":1473796711,"sys":{"type":1,"id":5091,"message":0.0448,"country":"GB","sunrise":1473744845,"sunset":1473790613},"id":2643743,"name":"London","cod":200}

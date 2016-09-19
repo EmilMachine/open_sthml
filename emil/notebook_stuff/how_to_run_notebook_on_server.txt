@@ -1,0 +1,5 @@
+
+-- HOW TO RUN IPYTHON ON PUBLIC SERVER --
+
+
+http://jupyter-notebook.readthedocs.io/en/latest/public_server.html

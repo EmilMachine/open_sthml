@@ -1,0 +1,13 @@
+<!-------------------------
+--- trafic happenings -----
+--------------------------->
+
+<!-- 
+Have to give input in SWEREF99TM format
+see: https://rl.se/rt90
+--> 
+<REQUEST><LOGIN authenticationkey="openapiconsolekey" /><QUERY objecttype="Situation"><FILTER><WITHIN name="Deviation.Geometry.SWEREF99TM" shape="center" value="674585 6580201" radius="10000" /></FILTER><INCLUDE>Deviation.Header</INCLUDE><INCLUDE>Deviation.IconId</INCLUDE><INCLUDE>Deviation.Message</INCLUDE><INCLUDE>Deviation.MessageCode</INCLUDE><INCLUDE>Deviation.MessageType</INCLUDE></QUERY></REQUEST>
+
+<!-------------------------
+--- trafic happenings -----
+--------------------------->

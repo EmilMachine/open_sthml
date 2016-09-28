@@ -1,6 +1,6 @@
 
 var caller = require("./api_caller");
-var train = require("./train_stations");
+var staionHandler = require("./train_stations");
 
 
 //train.getStationCoordinates("Mst")
@@ -11,18 +11,16 @@ var train = require("./train_stations");
 
 function handle_train_departures(data){
 	//console.log(data)
-	trainlist = JSON.parse(data).RESPONSE.RESULT[0].TrainAnnouncement
-	for (var i = 0; i < trainlist.length; i++) {
-		stationSign = trainlist[i].LocationSignature;
-		console.log(train.getStationCoordinates(stationSign));
+	departures = JSON.parse(data).RESPONSE.RESULT[0].TrainAnnouncement
+	for (var i = 0; i < departures.length; i++) {
+		departure = departures[i];
+		stationSign = departure.LocationSignature;
+		//goingTo = departure.ToLocation.LocationName;
+		station = staionHandler.getStationCoordinates(stationSign);
+		console.log("tran departuring from " + station.name + " going to " /*+(staionHandler.getStationCoordinates(goingTo)).name*/);
+		console.log()
 	};
-
-	/*trainlist.keys(obj).forEach(function (key) {
-        i++;
-        console.log;
-        console.log(key);
-        console.log(obj[key]);
-    });*/
+	
 }
 
 var body_train_departures = 

@@ -14,19 +14,25 @@ function handle_train_departures(data){
 	departures = JSON.parse(data).RESPONSE.RESULT[0].TrainAnnouncement
 	for (var i = 0; i < departures.length; i++) {
 		departure = departures[i];
+		//console.log(departure);
 		stationSign = departure.LocationSignature;
-		//goingTo = departure.ToLocation.LocationName;
-		station = staionHandler.getStationCoordinates(stationSign);
-		console.log("tran departuring from " + station.name + " going to " /*+(staionHandler.getStationCoordinates(goingTo)).name*/);
-		console.log()
+		goingTo = departure.ToLocation.LocationName;
+		station = staionHandler.getStation(stationSign);
+		//console.log(station);
+		console.log("Train " + departure.AdvertisedTrainIdent + " departured from " + station.name + " at " + departure.TimeAtLocation);
+		console.log("but should have departured at " + departure.AdvertisedTimeAtLocation);
+		console.log("next station is " + staionHandler.getStation(departure.ToLocation[0]).name);
+		console.log("--------------------------------------------")
+		//console.log("Tran departuring from " + station.name + " (" + station.lon + ", " + station.lat + ")");
+		//console.log("going to" /*+(staionHandler.getStationCoordinates(goingTo)).name*/);
+		//console.log()
 	};
-	
 }
 
 var body_train_departures = 
 '<REQUEST>' +
 '<LOGIN authenticationkey="5b1a60214fdd45b5bfc5166d2c95d30d" />' +
-'<QUERY objecttype="TrainAnnouncement" orderby="AdvertisedTimeAtLocation" limit="10">' +
+'<QUERY objecttype="TrainAnnouncement" orderby="AdvertisedTimeAtLocation" limit="20">' +
 '<FILTER>' +
 '<AND>' +
 '<EQ name="ActivityType" value="Avgang" />' +
@@ -46,8 +52,10 @@ var body_train_departures =
 '<INCLUDE>AdvertisedTrainIdent</INCLUDE>' +
 '<INCLUDE>AdvertisedTimeAtLocation</INCLUDE>' +
 '<INCLUDE>TrackAtLocation</INCLUDE>' +
-//'<INCLUDE>ToLocation</INCLUDE>' +
+'<INCLUDE>ToLocation</INCLUDE>' +
+'<INCLUDE>TimeAtLocation</INCLUDE>' +
 //'<INCLUDE>FromLocation</INCLUDE>' +
+
 '<INCLUDE>LocationSignature</INCLUDE>' +
 '</QUERY>' +
 '</REQUEST>';

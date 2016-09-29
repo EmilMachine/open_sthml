@@ -19,8 +19,8 @@ function handle_train_departures(data){
 		goingTo = departure.ToLocation.LocationName;
 		station = staionHandler.getStation(stationSign);
 		//console.log(station);
-		console.log("Train " + departure.AdvertisedTrainIdent + " departured from " + station.name + " at " + departure.TimeAtLocation);
-		console.log("but should have departured at " + departure.AdvertisedTimeAtLocation);
+		console.log("Train " + departure.AdvertisedTrainIdent + " departured from " + station.name + " (" + station.lon +","+ station.lat + ")");
+		console.log("at " + departure.TimeAtLocation + ",but should have departured at " + departure.AdvertisedTimeAtLocation);
 		console.log("next station is " + staionHandler.getStation(departure.ToLocation[0]).name);
 		console.log("--------------------------------------------")
 		//console.log("Tran departuring from " + station.name + " (" + station.lon + ", " + station.lat + ")");

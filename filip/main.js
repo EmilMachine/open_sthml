@@ -21,7 +21,10 @@ function handle_train_departures(data){
 		//console.log(station);
 		console.log("Train " + departure.AdvertisedTrainIdent + " departured from " + station.name + " (" + station.lon +","+ station.lat + ")");
 		console.log("at " + departure.TimeAtLocation + ",but should have departured at " + departure.AdvertisedTimeAtLocation);
-		console.log("next station is " + staionHandler.getStation(departure.ToLocation[0]).name);
+		console.log("after this it will go to:");
+		for (j=0; j< departure.ToLocation.length;j++){
+			console.log(staionHandler.getStation(departure.ToLocation[j]).name + "("+staionHandler.getStation(departure.ToLocation[j]).lon + "," + staionHandler.getStation(departure.ToLocation[j]).lat + ")");
+		}
 		console.log("--------------------------------------------")
 		//console.log("Tran departuring from " + station.name + " (" + station.lon + ", " + station.lat + ")");
 		//console.log("going to" /*+(staionHandler.getStationCoordinates(goingTo)).name*/);
@@ -35,18 +38,18 @@ var body_train_departures =
 '<QUERY objecttype="TrainAnnouncement" orderby="AdvertisedTimeAtLocation" limit="20">' +
 '<FILTER>' +
 '<AND>' +
-'<EQ name="ActivityType" value="Avgang" />' +
-//'<EQ name="LocationSignature" value="Cst" />' +
-'<OR>' +
-'<AND>' +
-'<GT name="AdvertisedTimeAtLocation" value="$dateadd(-0.00:15:00)" />' +
-'<LT name="AdvertisedTimeAtLocation" value="$dateadd(14:00:00)" />' +
-'</AND>' +
-'<AND>' +
-'<LT name="AdvertisedTimeAtLocation" value="$dateadd(00:30:00)" />' +
-'<GT name="EstimatedTimeAtLocation" value="$dateadd(-0.00:15:00)" />' +
-'</AND>' +
-'</OR>' +
+	'<EQ name="ActivityType" value="Avgang" />' +
+	//'<EQ name="LocationSignature" value="Cst" />' +
+	//'<OR>' +
+	//	'<AND>' +
+	//		'<GT name="AdvertisedTimeAtLocation" value="$dateadd(-0.00:15:00)" />' +
+	//		'<LT name="AdvertisedTimeAtLocation" value="$dateadd(14:00:00)" />' +
+	//	'</AND>' +
+	//	'<AND>' +
+	//		'<LT name="AdvertisedTimeAtLocation" value="$dateadd(00:30:00)" />' +
+	//		'<GT name="EstimatedTimeAtLocation" value="$dateadd(-0.00:15:00)" />' +
+	//	'</AND>' +
+	//'</OR>' +
 '</AND>' +
 '</FILTER>' +
 '<INCLUDE>AdvertisedTrainIdent</INCLUDE>' +

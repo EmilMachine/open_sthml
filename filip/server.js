@@ -48,7 +48,6 @@ app.get("/trafik", function (req, res) {
             */
             stations.push(station)
         };
-        //console.log(results[0]);
         res.send(stations);
     }
 

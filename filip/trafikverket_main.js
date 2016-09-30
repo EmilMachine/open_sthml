@@ -60,11 +60,14 @@ var body_train_departures =
 '</QUERY>' +
 '</REQUEST>';
 
-caller.make_call(body_train_departures, handle_train_departures);
+function get_train_departures(){
+	caller.make_call(body_train_departures, handle_train_departures);	
+}
 
 
 
 
+/*
 
 function handle_train_station(data){
 	//console.log(data)
@@ -76,12 +79,7 @@ function handle_train_station(data){
 		//console.log(station_list[i]);
 		//console.log(station_list[i].Advertised)
 	};
-	/*trainlist.keys(obj).forEach(function (key) {
-        i++;
-        console.log;
-        console.log(key);
-        console.log(obj[key]);
-    });*/
+
 }
 
 //var body_trafic = '<REQUEST><LOGIN authenticationkey="5b1a60214fdd45b5bfc5166d2c95d30d" /><QUERY objecttype="Situation" limit="5"><FILTER><WITHIN name="Deviation.Geometry.SWEREF99TM" shape="center" value="674585 6580201" radius="10000" /></FILTER><INCLUDE>Deviation.Header</INCLUDE><INCLUDE>Deviation.IconId</INCLUDE><INCLUDE>Deviation.Message</INCLUDE><INCLUDE>Deviation.MessageCode</INCLUDE><INCLUDE>Deviation.MessageType</INCLUDE></QUERY></REQUEST>';
@@ -93,5 +91,12 @@ var body_train_stations =
 '</QUERY>' + 
 '</REQUEST>' 
 //caller.make_call(body_train_stations, handle_train_station);
+
+*/
+
+module.get_train_departures = {
+  get_train_departures: get_train_departures
+};
+
 
 

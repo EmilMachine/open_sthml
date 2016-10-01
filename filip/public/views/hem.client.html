@@ -4,9 +4,32 @@
 <!--<div class="container" ng-init="initiateApp(); " ng-controller="AppCtrl">-->
 
 			<h1 ng-controller="AppCtrl">
-			Buttons {{janne}} </h1>
-		<form method="get" action="/trafik">
+			Get Trains</h1>
+		<form method="get" ng-click='getTrafik();'>
     		<button class="btn btn-primary btn-large" type="submit">Get train departures</button>
 		</form>
-		
+
+<div class="col-md-12">
+				<h2> Trains</h2>
+				<table class="table table-striped">
+					<tr class="tableHeader">
+						<th class="col-md-3">Train Id</th>
+						<th class="col-md-2">Station Name</th>
+						<th class="col-md-3">Departure Time</th>
+						<th class="col-md-2">Lon</th>
+						<th class="col-md-2">Lat</th>
+
+
+					</tr>
+					<tr ng-repeat="train in trains">
+						<td> {{train.trainNbr}}</td>
+						<td> {{train.station.name}}</td>
+						<td> {{train.departureTime}}</td>
+						<td> {{train.station.lon}}</td>
+						<td> {{train.station.lat}}</td>
+						
+					</tr>
+				</table>
+			</div>
+<!--<div class="col-md-9">{{trains}}</div>-->
 </div>

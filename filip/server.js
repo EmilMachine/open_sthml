@@ -12,7 +12,7 @@ app.get("/trafik", function (req, res) {
     var body_train_departures = 
         '<REQUEST>' +
         '<LOGIN authenticationkey="5b1a60214fdd45b5bfc5166d2c95d30d" />' +
-        '<QUERY objecttype="TrainAnnouncement" orderby="AdvertisedTimeAtLocation" limit="20">' +
+        '<QUERY objecttype="TrainAnnouncement" orderby="AdvertisedTimeAtLocation" limit="30">' +
         '<FILTER>' +
         '<AND>' +
         '<EQ name="ActivityType" value="Avgang" />' +
@@ -28,27 +28,43 @@ app.get("/trafik", function (req, res) {
         '</REQUEST>';
 
     var handle_train_departures = function handle_train_departures(data){
-        //console.log(data)
-        stations = []
-        departures = JSON.parse(data).RESPONSE.RESULT[0].TrainAnnouncement
-        for (var i = 0; i < departures.length; i++) {
-            departure = departures[i];
-            //console.log(departure);
-            stationSign = departure.LocationSignature;
-            goingTo = departure.ToLocation.LocationName;
-            station = staionHandler.getStation(stationSign);
-            //console.log(station);
-            /*console.log("Train " + departure.AdvertisedTrainIdent + " departured from " + station.name + " (" + station.lon +","+ station.lat + ")");
-            console.log("at " + departure.TimeAtLocation + ",but should have departured at " + departure.AdvertisedTimeAtLocation);
-            console.log("after this it will go to:");
-            for (j=0; j< departure.ToLocation.length;j++){
-                console.log(staionHandler.getStation(departure.ToLocation[j]).name + "("+staionHandler.getStation(departure.ToLocation[j]).lon + "," + staionHandler.getStation(departure.ToLocation[j]).lat + ")");
-            }
-            console.log("--------------------------------------------")
-            */
-            stations.push(station)
+        console.log(data)
+        trains = []
+        train = {
+            "trainNbr":"",
+            "station":"",
+            "departureTime":"",
+            "advertisedTime":"",
+            "nextStations":{}
+        }
+        departures_trafikverket = JSON.parse(data).RESPONSE.RESULT[0].TrainAnnouncement
+        if (departures_trafikverket != undefined){
+            for (var i = 0; i < departures_trafikverket.length; i++) {
+                departure = departures_trafikverket[i];
+                
+                stationSign = departure.LocationSignature;
+                goingTo = departure.ToLocation.LocationName;
+                station = staionHandler.getStation(stationSign);
+                temp_train = train;
+                temp_train.trainNbr = departure.AdvertisedTrainIdent;
+                temp_train.station = station;
+                temp_train.departureTime = departure.TimeAtLocation;
+                temp_train.advertisedTime = departure.AdvertisedTimeAtLocation;
+                next_stations = []
+                for (j=0; j< departure.ToLocation.length;j++){
+                    next_stations.push(staionHandler.getStation(departure.ToLocation[j]));
+                }
+                temp_train.nextStations = next_stations;
+                trains.push(temp_train)
+            };
         };
-        res.send(stations);
+        console.log(trains);
+        res.json({
+            success: true,
+            message: "successfully got trains",
+            data: trains
+        });
+
     }
 
     caller.make_call(body_train_departures,handle_train_departures)

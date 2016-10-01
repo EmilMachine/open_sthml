@@ -9,11 +9,25 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.contacts = response;
 });*/
 
+$scope.getTrafik = function(){
+	console.log('skaffar vi läggor');
+	$http.get('/trafik').success(function(response){
+		$scope.trains = response.data;
+	});
+};
+
 
 $scope.initiateApp = function(){
     console.log('inne i initation')
     
 };
+
+
+
+
+
+
+
 
 }]).config(function($routeProvider){
     $routeProvider.when('/',

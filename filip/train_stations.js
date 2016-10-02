@@ -21305,10 +21305,7 @@ var stations = [ { Advertised: false,
 function getStationFromSign(signature){
     station_found = [];
     for (var i = 0; i < stations.length; i++) {
-        //console.log(stations[i].LocationSignature)
         if(signature == stations[i].LocationSignature){
-            //console.log(signature)
-            //console.log(stations[i].LocationSignature)
             station_found = stations[i];
             break;
         }
@@ -21351,7 +21348,6 @@ function getStation(signature){
           station_return.county = "not defined";
       }
     }
-    
     return station_return;
 }
 

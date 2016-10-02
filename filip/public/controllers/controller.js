@@ -10,12 +10,23 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 });*/
 
 $scope.getTrafik = function(){
-	console.log('skaffar vi läggor');
+	console.log('getTrafik is running');
+	//window.alert("yay")
 	$http.get('/trafik').success(function(response){
-		$scope.trains = response.data;
+		//error handling
+		if (response.success){
+			$scope.departures = response.data;
+			console.log(response.message);
+
+		}else{
+			console.log(response.message);
+			alert(response.message +"\n" + "Source: " + response.data.SOURCE + "\nMessage: " + response.data.MESSAGE);
+		}
+
+		console.log("det gick bra? " + response.success)
+	
 	});
 };
-
 
 $scope.initiateApp = function(){
     console.log('inne i initation')

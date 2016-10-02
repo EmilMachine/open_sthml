@@ -21302,7 +21302,6 @@ var stations = [ { Advertised: false,
     Prognosticated: true } ]
 
 
-
 function getStationFromSign(signature){
     station_found = [];
     for (var i = 0; i < stations.length; i++) {
@@ -21328,31 +21327,96 @@ function getStation(signature){
         "county":""
     }
     station = getStationFromSign(signature);
-    //coordinates
-    coord_data = station.Geometry.WGS84;
-    start = coord_data.indexOf("(")+1;
-    end = coord_data.length-coord_data.indexOf("(")-2;
-    coord_array = (coord_data.substr(start,end)).split(" ");
-    station_return.lon = coord_array[0];
-    station_return.lat = coord_array[1];
-    //name
-    station_return.name = station.AdvertisedLocationName;
-    nameCord = '{ "name":"' + station.AdvertisedLocationName + '", "lon":' + coord_array[0] +',"lat":' + coord_array[1] + '}';
-    // sign
-    station_return.sign = signature;
-    //Shortname
-    station_return.shortName = station.AdvertisedShortLocationName;
-    // country
-    station_return.country = station.CountryCode;
-    // county
-     if (station.CountyNo != undefined){
-        station_return.county = getCounty(station.CountyNo[0])
-    }else{
-        station_return.county = "not defined";
+    if (station.Advertised != undefined){
+      //coordinates
+      coord_data = station.Geometry.WGS84;
+      start = coord_data.indexOf("(")+1;
+      end = coord_data.length-coord_data.indexOf("(")-2;
+      coord_array = (coord_data.substr(start,end)).split(" ");
+      station_return.lon = coord_array[0];
+      station_return.lat = coord_array[1];
+      // name
+      station_return.name = station.AdvertisedLocationName;
+      nameCord = '{ "name":"' + station.AdvertisedLocationName + '", "lon":' + coord_array[0] +',"lat":' + coord_array[1] + '}';
+      // sign
+      station_return.sign = signature;
+      //Shortname
+      station_return.shortName = station.AdvertisedShortLocationName;
+      // country
+      station_return.country = station.CountryCode;
+      // county
+       if (station.CountyNo != undefined){
+          station_return.county = getCounty(station.CountyNo[0])
+      }else{
+          station_return.county = "not defined";
+      }
     }
     
     return station_return;
 }
+
+function addStationsToDepartures(departures_trafikverket){         
+        departures = []
+        // itterate through all departures and create json objects
+        // fill trains array with the json objects
+        if (departures_trafikverket != undefined){
+            for (var i = 0; i < departures_trafikverket.length; i++) {
+                departure = departures_trafikverket[i]; 
+                
+                station_sign = departure.LocationSignature;
+                goingTo = departure.ToLocation.LocationName;
+                station = getStation(station_sign);
+                
+                var temp_departure = {};
+                temp_departure["trainNbr"] = departure.AdvertisedTrainIdent;
+                temp_departure["station"] = station;
+                temp_departure["departureTime"] = departure.TimeAtLocation;
+                temp_departure["advertisedTime"] = departure.AdvertisedTimeAtLocation;
+                next_stations = [];
+                for (j=0; j< departure.ToLocation.length;j++){
+                    next_stations.push(getStation(departure.ToLocation[j]).name);
+                }
+                //console.log(next_stations);
+                temp_departure["nextStations"] = next_stations;
+                departures.push(temp_departure);
+                
+            };
+        };
+        //console.log(trains);
+        return departures;
+    }
+
+function getCounty(code){
+    var county = { "1":"Stockholms län",
+                "3":"Uppsala län",
+                "4":"Södermanlands län",
+                "5":"Östergötlands län",
+                "6":"Jönköpings län",
+                "7":"Kronobergs län",
+                "8":"Kalmar län",
+                "9":"Gotlands län",
+                "10":"Blekinge län",
+                "12":"Skåne län",
+                "13":"Hallands län",
+                "14":"Västra Götalands län",
+                "17":"Värmlands län",
+                "18":"Örebro län",
+                "19":"Västmanlands län",
+                "20":"Dalarnas län",
+                "21":"Gävleborgs län",
+                "22":"Västernorrlands län",
+                "23":"Jämtlands län",
+                "24":"Västerbottens län",
+                "25":"Norrbottens län"}
+    return county[code]
+}
+
+module.exports = {
+  getStation: getStation,
+  addStationsToDepartures: addStationsToDepartures
+};
+
+
 
 /*
 var county = { "1":"Stockholms län",
@@ -21433,35 +21497,4 @@ console.log("county nulls: " + county_cnt);
 console.log("county nulls: " + Geometry_cnt);
 console.log("county nulls: " + name_cnt);
 */
-
-
-function getCounty(code){
-    var county = { "1":"Stockholms län",
-                "3":"Uppsala län",
-                "4":"Södermanlands län",
-                "5":"Östergötlands län",
-                "6":"Jönköpings län",
-                "7":"Kronobergs län",
-                "8":"Kalmar län",
-                "9":"Gotlands län",
-                "10":"Blekinge län",
-                "12":"Skåne län",
-                "13":"Hallands län",
-                "14":"Västra Götalands län",
-                "17":"Värmlands län",
-                "18":"Örebro län",
-                "19":"Västmanlands län",
-                "20":"Dalarnas län",
-                "21":"Gävleborgs län",
-                "22":"Västernorrlands län",
-                "23":"Jämtlands län",
-                "24":"Västerbottens län",
-                "25":"Norrbottens län"}
-    return county[code]
-}
-
-module.exports = {
-  getStation: getStation
-};
-
 

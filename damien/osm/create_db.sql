@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS entity (
+id	    INTEGER PRIMARY KEY,
+lat	    DOUBLE,
+lon	    DOUBLE,
+type    VARCHAR,
+name	VARCHAR,
+UNIQUE(lat, lon, name) ON CONFLICT IGNORE
+);
+

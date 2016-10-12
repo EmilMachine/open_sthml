@@ -10,6 +10,28 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 });*/
 
 
+
+
+
+
+$scope.getRealtimeTraffic = function(){
+	console.log('getTrafik is running');
+	$http.get('/get_realtime_traffic').success(function(response){
+		//error handling
+		if (response.success){
+			$scope.trafiklab_data = response.data;
+			console.log(response.message);
+		}
+	});	
+};
+
+$scope.initiateApp = function(){
+    console.log('inne i initation')
+    
+};
+
+
+/*
 $scope.initiateLeaflet = function(){
 	var mymap = L.map('map').setView([51.505, -0.09], 13);
 
@@ -25,37 +47,7 @@ $scope.initiateLeaflet = function(){
 			    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
 			    .openPopup();
 }
-
-
-
-$scope.getTrafik = function(){
-	console.log('getTrafik is running');
-	//window.alert("yay")
-	$http.get('/trafik').success(function(response){
-		//error handling
-		if (response.success){
-			$scope.departures = response.data;
-			console.log(response.message);
-
-		}else{
-			console.log(response.message);
-			alert(response.message +"\n" + "Source: " + response.data.SOURCE + "\nMessage: " + response.data.MESSAGE);
-		}
-
-		console.log("det gick bra? " + response.success)
-	
-	});
-
-	
-};
-
-$scope.initiateApp = function(){
-    console.log('inne i initation')
-    
-};
-
-
-
+*/
 
 
 

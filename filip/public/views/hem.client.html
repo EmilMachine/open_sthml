@@ -1,11 +1,14 @@
 
 
-<div class="container" ng-controller="AppCtrl" ng-init="initiateLeaflet();" >
-<!--<div class="container" ng-init="initiateApp(); " ng-controller="AppCtrl">-->
+<div class="container" ng-controller="AppCtrl"  >
+<!--<div class="container" ng-init="initiateApp(); ng-init="initiateLeaflet(); " ng-controller="AppCtrl">-->
 	
 	<h1 ng-controller="AppCtrl">Get Departures</h1>
-	<form method="get" ng-click='getTrafik();'>
+	<!--<form method="get" ng-click='getTrafik();'>
 		<button class="btn btn-primary btn-large" type="submit">Get Departures</button>
+	</form>-->
+	<form method="get" ng-click='getRealtimeTraffic();'>
+		<button class="btn btn-primary btn-large" type="submit">Get trafiklab</button>
 	</form>
 	<div class="col-md-12">
 		<h2> Departures</h2>
@@ -28,5 +31,5 @@
 			</tr>
 		</table>
 	</div>
-	<div id="map"></div>
+	<div>{{trafiklab_data}}</div>
 </div>

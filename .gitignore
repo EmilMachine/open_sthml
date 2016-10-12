@@ -1,0 +1,2 @@
+# ignore maps files (too big and should not be part of data project)
+*.osm

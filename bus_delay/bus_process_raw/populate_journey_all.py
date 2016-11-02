@@ -18,7 +18,7 @@ query_get_json = 'SELECT raw FROM busraw'
 base_path = '/Users/emil/Documents/code/open_data/open_sthml/bus_delay/bus_get_raw/'
 
 
-conn = sqlite3.connect(base_path + 'bus_raw_1week.db')
+conn = sqlite3.connect(base_path + 'bus_raw_1day.db')
 
 cwrite = conn.cursor()
 cread = conn.cursor()

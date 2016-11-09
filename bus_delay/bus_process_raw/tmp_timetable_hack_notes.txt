@@ -1,0 +1,61 @@
+Temp time table hack:
+
+main lookup page:
+http://sl.se/sv/reseinfo/#/TimeTableSearch/GetLineTimeTables/NULL/NULL/1/NULL/35/0/10
+
+
+Actual time table:
+http://sl.se/ficktid/vinter/V01.pdf
+
+-- CREATE INSERT DATA
+create table line_1 (
+id integer primary key,
+stop_name varchar
+)
+
+-- UPDATE DATA
+insert into line_1 (stop_name) VALUES 
+("Essingetorget")
+,("Flottbrovägen")
+,("Broparken")
+,("Primusgatan")
+,("Lilla Essingen")
+,("Wivalliusgatan")
+,("Fyrverkarbacken")
+,("Västerbroplan")
+,("Mariebergsgatan")
+,("Fridhemsplan")
+,("S:t Eriksgatan")
+,("S:t Eriks ögonsjukhus")
+,("Scheelegatan")
+,("Kungsbroplan")
+,("Cityterminalen")
+,("Hötorget")
+,("Regeringsgatan")
+,("Stureplan")
+,("Linnégatan")
+,("Humlegården")
+,("Nybrogatan")
+,("Jungfrugatan")
+,("Värtavägen")
+,("Storskärsgatan")
+,("Kampementsbacken")
+,("Gärdet")
+,("Sandhamnsplan")
+,("Rökubbsgatan")
+,("Östhammarsgatan")
+,("Sehlstedtsgatan")
+,("Frihamnsporten")
+,("Frihamnen")
+
+
+-- THE JOIN
+SELECT 
+ max(LocationNorthingCoordinate)
+, max(LocationEastingCoordinate)
+, l.id
+from stop_area sa
+join line_1 l
+    on sa.StopPointName = l.stop_name
+group by l.id
+ORDER BY l.id

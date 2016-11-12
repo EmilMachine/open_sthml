@@ -76,7 +76,7 @@ class CallBack(object):
 cb = CallBack()
 #p = OSMParser(concurrency=4, nodes_callback=cb.node_tags_callback)
 p = OSMParser(concurrency=5, nodes_callback=cb.node_tags_to_db_callback)
-p.parse("stockholm.osm")
+p.parse("x")
 
 conn.commit()
 conn.close()

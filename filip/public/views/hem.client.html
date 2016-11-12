@@ -11,25 +11,25 @@
 		<button class="btn btn-primary btn-large" type="submit">Get trafiklab</button>
 	</form>
 	<div class="col-md-12">
-		<h2> Departures</h2>
+		<h2> Busses</h2>
 		<table class="table table-striped">
 			<tr class="tableHeader">
-				<th class="col-md-1">Train Id</th>
+				<th class="col-md-1">Destination</th>
 				<th class="col-md-1">Station Name</th>
 				<th class="col-md-1">Departure Time</th>
 				<th class="col-md-1">Lon</th>
 				<th class="col-md-1">Lat</th>
 				<th class="col-md-2">next</th>
 			</tr>
-			<tr ng-repeat="departure in departures">
-				<td> {{departure.trainNbr}}</td>
-				<td> {{departure.station.name}}</td>
-				<td> {{departure.departureTime}}</td>
-				<td> {{departure.station.lon}}</td>
-				<td> {{departure.station.lat}}</td>
-				<td> {{nextStations}}<span ng-repeat="station in departure.nextStations"> {{station}},</span> </td>
+			<tr ng-repeat="item in trafiklab_data">
+				<td> {{item.Destination}}</td>
+				<td> {{item.ExpectedDateTime}}</td>
+				<td> {{item.LineNumber}}</td>
+				<td> {{item.StopAreaName}}</td>
+				<td> {{item.TimeTabledDateTime}}</td>
+				<td> {{item.TimeTabledDateTime}}<span ng-repeat="station in departure.nextStations"> {{station}},</span> </td>
 			</tr>
 		</table>
 	</div>
-	<div>{{trafiklab_data}}</div>
 </div>
+

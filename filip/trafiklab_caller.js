@@ -1,7 +1,6 @@
 var http = require('http');
 
 function getTraficlab(query, callback) {
-	siteid =9192
 	console.log(query.siteId + ", " + query.timeWindow);
     return http.get({
         host: 'api.sl.se',
@@ -19,9 +18,11 @@ function getTraficlab(query, callback) {
             callback(parsed);
         });
     });
-
 }
 
+function saveToDb(data, callback){
+
+}
 
 
 

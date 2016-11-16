@@ -159,7 +159,7 @@ def extract_stops(txt):
         line = m.group(1)
         line = line.strip()
     time_table = TimeTableStops(line=line)
-    time_table.direction_2_label = table.next().strip()
+    time_table.direction_2_label = table.next()
 
     line = skip_blank_lines(table)
 
@@ -172,7 +172,7 @@ def extract_stops(txt):
         raise Exception("Unexpected line: direction 1 and direction 2 line's label not matching. "
                         "Read {line_d1} while expecting {line_d2}".format(line_d1=line,
                                                                           line_d2=time_table.line))
-    time_table.direction_1_label = table.next().strip()
+    time_table.direction_1_label = table.next()
 
     #### Read direction
     time_table.direction_2 = read_stops_block(table)
@@ -204,7 +204,7 @@ def persist_timetable(tt):
 
     #print(line_query + gen_vals(tt.line, 1, tt.direction_1))
     cur.execute(line_query + gen_vals(tt.line, 1, tt.direction_1))
-    cur.execute(line_query + gen_vals(tt.line, 2, tt.direction_1))
+    cur.execute(line_query + gen_vals(tt.line, 2, tt.direction_2))
 
     DBCon.commit()
 

@@ -5,6 +5,7 @@ import sys
 import json
 import sqlite3
 import re
+import os.path
 
 # pip install pdfminer
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
@@ -126,7 +127,8 @@ def get_group(regex, s, group=1):
     return [found_match, ret]
 
 def read_stops_block(it):
-    za_re = re.compile("zA(.*)")
+    za_re = re.compile("zB|zA(.*)")
+
     #### Read direction
     bstop = skip_blank_lines(it)
 
@@ -134,6 +136,7 @@ def read_stops_block(it):
     right_dir = [bstop] + read_text_block(it)
     marker = skip_blank_lines(it)
     matched, bstop = get_group(za_re, marker)
+
 
     if matched and not bstop:
         bstop = skip_blank_lines(it)
@@ -147,10 +150,13 @@ def read_stops_block(it):
     return left_dir+right_dir
 
 def extract_stops(txt):
-    #print(txt)
+    print(txt)
     table = iter(txt.split('\n'))
+
+    # define regex
     line_re = re.compile("Hållplatser linje (.*)")
-    za_re = re.compile("zA(.*)")
+    noter_re = re.compile("Noter")
+    
 
     # direction 2
     line = table.next()
@@ -163,25 +169,28 @@ def extract_stops(txt):
 
     line = skip_blank_lines(table)
 
+
+    if re.match(noter_re, line.strip()):
+        print(read_text_block(table))
     # direction 1
     m = re.match(line_re, line)
     if m:
         line = m.group(1)
         line = line.strip()
-    if line != time_table.line:
-        raise Exception("Unexpected line: direction 1 and direction 2 line's label not matching. "
-                        "Read {line_d1} while expecting {line_d2}".format(line_d1=line,
-                                                                          line_d2=time_table.line))
+    #if line != time_table.line:
+        #raise Exception("Unexpected line: direction 1 and direction 2 line's label not matching. "
+        #                "Read {line_d1} while expecting {line_d2}".format(line_d1=line,                                                                      line_d2=time_table.line))
     time_table.direction_1_label = table.next()
 
     #### Read direction
-    time_table.direction_2 = read_stops_block(table)
+    #time_table.direction_2 = read_stops_block(table)
     time_table.direction_1 = read_stops_block(table)
 
     #print(len(time_table.direction_1))
     #print(len(time_table.direction_2))
     time_table.doPostProcessing()
-    #print(time_table)
+    print("---------------------------------------")
+    print(time_table)
 
     return time_table
 
@@ -221,8 +230,13 @@ else:
     import urllib.request
     urlopen = urllib.request.urlopen
 
-json_links = json.loads(urlopen(url_api).read())
-print(json_links)
+sl_json = 'sl_pdf_list.json'
+if (not os.path.isfile(sl_json)):
+    json_links = json.loads(urlopen(url_api).read())
+else:
+    with open(sl_json,'r') as f:
+        json_links = json.loads(f.read())
+#print(json_links)
 
 ltracking = None
 tracking_fn = "tracking.pkl"
@@ -237,28 +251,31 @@ print(ltracking)
 force_redo = []
 force_ignore = ["35Ö"]
 
-for i in json_links["data"]:
-    if not i["IsCollectionTimeTable"]:
-        lineid = i["LineId"]
-        if lineid not in ltracking or lineid in force_redo and lineid not in force_ignore:
-            print(lineid+": Downloading "+root_url+i["LineTableUrl"])
-            url = root_url+i["LineTableUrl"]
-            response = urlopen(url.encode("utf8"))
-            f = open("current.pdf", 'w')
-            f.write(response.read())
-            f.close()
-            try:
-                tt = extract_stops(convert_pdf_to_txt("current.pdf"))
-                persist_timetable(tt)
-                ltracking.append(lineid)
-                with open(tracking_fn, "w+") as fd:
-                    pickle.dump(ltracking, fd)
-                print(i["LineId"]+" has been processed properly")
-            except Exception as e:
-                print(e.message)
-                #print(u"Error while processing "+lineid+u": "+e.message)
-                pass
+# for i in json_links["data"]:
+#     if not i["IsCollectionTimeTable"]:
+#         lineid = i["LineId"]
+#         if lineid not in ltracking or lineid in force_redo and lineid not in force_ignore:
+#             url = root_url+i["LineTableUrl"]
+#             file_name ='pdfs/' + url.split('/')[-1]
+#             print((os.path.isfile(file_name)))
+#             if not os.path.isfile(file_name) or not os.path.isfile(file_name.replace(' ','')):
+#                 print(lineid+": Downloading "+root_url+i["LineTableUrl"])
+#                 response = urlopen(url)                
+#                 f = open(file_name, 'w')
+#                 f.write(response.read())
+#                 f.close()
+#             try:
+#                 tt = extract_stops(convert_pdf_to_txt(file_name))
+#                 persist_timetable(tt)
+#                 ltracking.append(lineid)
+#                 with open(tracking_fn, "w+") as fd:
+#                     pickle.dump(ltracking, fd)
+#                 print(i["LineId"]+" has been processed properly")
+#             except Exception as e:
+#                 print(e.message)
+#                 #print(u"Error while processing "+lineid+u": "+e.message)
+#                 pass
 
-#tt = extract_stops(convert_pdf_to_txt("V01.pdf"))
+tt = extract_stops(convert_pdf_to_txt("pdfs/302.pdf"))
 #persist_timetable(tt)
 #print(convert_pdf_to_txt("V01.pdf"))

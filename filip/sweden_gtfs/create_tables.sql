@@ -17,8 +17,29 @@ trip_short_name text
 )
 
 
+create table stop_times (
+trip_id text,
+arrival_time text,
+departure_time text,
+stop_id text,
+stop_sequence text,
+pickup_type text,
+drop_off_type text )
 
-select * from routes where route_short_name = '160' and agency_id = '275'
 
-route_id,agency_id,route_short_name,route_long_name,route_type,route_url
-"6024";"275";"160";"";"700";"http://www.resrobot.se/"
+create table stops (
+stop_id text,
+stop_name text,
+stop_lat text,
+stop_lon text,
+location_type text
+)
+
+
+create table agency (
+agency_id text,
+agency_name text,
+agency_url text,
+agency_timezone text,
+agency_lang text
+)
